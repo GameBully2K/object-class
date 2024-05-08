@@ -5,8 +5,6 @@ import { CLOUDFLAREAPIKEY, CLOUDFLAREID } from '$env/static/private';
 const accountID = CLOUDFLAREID;
 const token = CLOUDFLAREAPIKEY;
 
-console.log(accountID, token);
-
 /** @type {import('./$types').RequestHandler} */
 export async function POST({request}) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${accountID}/ai/run/@cf/facebook/detr-resnet-50`;
