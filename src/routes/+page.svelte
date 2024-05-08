@@ -1,17 +1,36 @@
 <script>
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import axios from 'axios';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		document.addEventListener('paste', handlePaste);
+	});
 
 	let uploadedImage;
 	let blob;
-	let promise;
-	let results;
 
-	const accountID = import.meta.env.CLOUDFLARE_ACCOUNT_ID;
-	const token = import.meta.env.CLOUDFLARE_TOKEN;
+	async function handlePaste(event) {
+		
+		const items = (event.clipboardData || window.clipboardData).items;
+
+		
+		const item = items[0];
+
+		if (item.type.indexOf('image') !== -1) {
+			const file = item.getAsFile();
+			const reader = new FileReader();
+			reader.onload = async () => {
+				uploadedImage = reader.result;
+				blob = await fetch(uploadedImage).then((res) => res.blob());
+			};
+			reader.readAsDataURL(file);
+		}
+	}
 
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
+		console.log(blob);
 		const reader = new FileReader();
 
 		reader.onload = async () => {
@@ -19,8 +38,6 @@
 			blob = await fetch(uploadedImage).then((res) => res.blob());
 		};
 		reader.readAsDataURL(file);
-
-		console.log('here is ' + JSON.stringify(blob));
 	}
 
 	async function handleURLChange(event) {
@@ -44,6 +61,7 @@
 				on:change={handleURLChange}
 			/>
 		</label>
+		<p class="p">or simply paste the image from you clipboard with CTRL+V</p>
 	</div>
 
 	<div
@@ -64,12 +82,12 @@
 							<nav class="list-nav">
 								<ul>
 									<div
-										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4 py-10"
+										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4 py-10 items-start justify-center"
 									>
 										{#if response.data.length != 0}
 											{#each response.data as item}
-												<li>
-														<span class="badge bg-primary-500"
+												<li >
+														<span class="badge w-14 h-10 font-2 bg-primary-500"
 															>{Math.round(item.score * 100) == 100
 																? 99
 																: Math.round(item.score * 100)}%</span
@@ -79,7 +97,6 @@
 											{/each}
 										{:else}
 											<li>
-												<span class="badge bg-primary-500">100%</span>
 												<span class="h3 flex-auto text-start font-semibold">No results found</span>
 											</li>
 										{/if}
