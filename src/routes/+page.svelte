@@ -62,7 +62,7 @@
 	>
 		{#if uploadedImage}
 			<div class="justify-left flex w-[20%] w-full items-start">
-				<img alt class="h-auto w-[50%] h-[50vh] object-cover rounded-3xl" src={uploadedImage} />
+				<img alt class="w-[50%] h-[50vh] object-cover rounded-lg" src={uploadedImage} />
 				<div class="flex h-full w-[50%] flex-col items-center justify-center gap-4">
 					<h3 class="h2 font-semibold">Results</h3>
 					{#if blob}
