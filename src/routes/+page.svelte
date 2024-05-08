@@ -21,23 +21,12 @@
 		reader.readAsDataURL(file);
 
 		console.log('here is ' + JSON.stringify(blob));
-		//blob = await image.blob();
-		//promise = await sendToCloudflare(image);
 	}
 
 	async function handleURLChange(event) {
 		uploadedImage = event.target.value;
 		blob = await fetch(uploadedImage).then((res) => res.blob());
-		//promise = await sendToCloudflare(image);
 	}
-
-	// async function sendToCloudflare(blob) {
-	// 	let res = await axios.post('/cloudflare', blob,{headers:{'Content-Type': 'image/*'}});
-	// 	res = res.data;
-
-	// 	console.log(res);
-	// 	results = res;
-	// }
 </script>
 
 <div class="flex gap-6 p-20">
@@ -80,14 +69,12 @@
 										{#if response.data.length != 0}
 											{#each response.data as item}
 												<li>
-													<a href="/elements/lists">
 														<span class="badge bg-primary-500"
 															>{Math.round(item.score * 100) == 100
 																? 99
 																: Math.round(item.score * 100)}%</span
 														>
 														<span class="h3 flex-auto text-start font-semibold">{item.label}</span>
-													</a>
 												</li>
 											{/each}
 										{:else}
