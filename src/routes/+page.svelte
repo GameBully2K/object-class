@@ -30,7 +30,6 @@
 
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
-		console.log(blob);
 		const reader = new FileReader();
 
 		reader.onload = async () => {
