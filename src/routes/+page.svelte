@@ -45,9 +45,9 @@
 	}
 </script>
 
-<div class="flex gap-6 p-20">
+<div class="flex flex-col md:flex-row gap-6 p-4 md:p-20 ">
 	<div
-		class="card card-hover block flex h-[60vh] w-[20%] flex-col justify-center gap-4 p-4 text-center"
+		class="card card-hover block flex h-[60vh] w-[100%] md:w-[24%] md:p-4 flex-col justify-center gap-4 p-2 text-center"
 	>
 		<h3 class="h3 font-semibold">Upload Picture</h3>
 		<FileDropzone name="files" accept="image/*" class="h-[50%]" on:change={handleFileChange} />
@@ -64,12 +64,12 @@
 	</div>
 
 	<div
-		class="card card-hover block flex w-[80%] flex-col items-center justify-center p-10 px-20 text-center"
+		class="card card-hover block flex w-[100%] md:w-[80%] h-[95vh] md:h-auto flex-col items-center justify-center p-2 md:p-10 px-10 md:px-20 text-center"
 	>
 		{#if uploadedImage}
-			<div class="justify-left flex w-[20%] w-full items-start">
-				<img alt class="w-[50%] h-[50vh] object-cover rounded-lg" src={uploadedImage} />
-				<div class="flex h-full w-[50%] flex-col items-center justify-center gap-4">
+			<div class="justify-left flex w-full items-start flex-col md:flex-row">
+				<img alt class="w-[100%] md:w-[50%] h-[50vh] object-cover rounded-lg" src={uploadedImage} />
+				<div class="flex  w-[100%] md:w-[50%] h-[30vh] md:h-full flex-col items-center justify-center gap-4">
 					<h3 class="h2 font-semibold">Results</h3>
 					{#if blob}
 						{#await axios.post('/cloudflare', blob, { headers: { 'Content-Type': 'image/*' } })}
@@ -81,7 +81,7 @@
 							<nav class="list-nav">
 								<ul>
 									<div
-										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4 py-10 items-start justify-center"
+										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4items-start justify-center"
 									>
 										{#if response.data.length != 0}
 											{#each response.data as item}
