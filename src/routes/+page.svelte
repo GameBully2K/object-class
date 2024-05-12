@@ -19,24 +19,31 @@
 
 		if (item.type.indexOf('image') !== -1) {
 			const file = item.getAsFile();
-			const reader = new FileReader();
-			reader.onload = async () => {
-				uploadedImage = reader.result;
+			const urlReader = new FileReader();
+			urlReader.onload = async () => {
+				uploadedImage = urlReader.result;
 				blob = await fetch(uploadedImage).then((res) => res.blob());
 			};
-			reader.readAsDataURL(file);
+			urlReader.readAsDataURL(file);
 		}
 	}
 
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
-		const reader = new FileReader();
+		const urlReader = new FileReader();
 
-		reader.onload = async () => {
-			uploadedImage = reader.result;
-			blob = await fetch(uploadedImage).then((res) => res.blob());
+		urlReader.onload = async () => {
+			uploadedImage = urlReader.result;
 		};
-		reader.readAsDataURL(file);
+		urlReader.readAsDataURL(file);
+
+		const blobReader = new FileReader();
+
+		blobReader.onload = async () => {
+			blob = new Blob([blobReader.result], { type: "image/*" });
+		};
+		blobReader.readAsArrayBuffer(file);
+		console.log(blob);
 	}
 
 	async function handleURLChange(event) {
@@ -81,7 +88,7 @@
 							<nav class="list-nav">
 								<ul>
 									<div
-										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4items-start justify-center"
+										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4items-start justify-start"
 									>
 										{#if response.data.length != 0}
 											{#each response.data as item}
