@@ -3,12 +3,34 @@
 	import axios from 'axios';
 	import { onMount } from 'svelte';
 
-	onMount(async () => {
-		document.addEventListener('paste', handlePaste);
-	});
-
 	let uploadedImage;
 	let blob;
+	let ctrlSwitch = "px-4 py-2 variant-ghost flex items-center justify-center rounded-lg";
+	let vSwitch = "px-4 py-2 variant-ghost flex items-center justify-center rounded-lg";
+
+	$:if (uploadedImage) {
+		document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+	}
+
+	onMount(async () => {
+		document.addEventListener('paste', handlePaste);
+		document.addEventListener('keydown', (event) => {
+			if (event.ctrlKey) {
+				ctrlSwitch = "px-4 py-2 bg-primary-500 flex items-center justify-center rounded-lg";
+			}
+			if (event.key === 'v') {
+				vSwitch = "px-4 py-2 bg-primary-500 flex items-center justify-center rounded-lg";
+			}
+		});
+		document.addEventListener('keyup', (event) => {
+			if (!event.ctrlKey) {
+				ctrlSwitch = "px-4 py-2 variant-ghost flex items-center justify-center rounded-lg";
+			}
+			if (event.key === 'v') {
+				vSwitch = "px-4 py-2 variant-ghost flex items-center justify-center rounded-lg";
+			}
+		});
+	});
 
 	async function handlePaste(event) {
 		
@@ -23,6 +45,7 @@
 			urlReader.onload = async () => {
 				uploadedImage = urlReader.result;
 				blob = await fetch(uploadedImage).then((res) => res.blob());
+				document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
 			};
 			urlReader.readAsDataURL(file);
 		}
@@ -43,7 +66,6 @@
 			blob = new Blob([blobReader.result], { type: "image/*" });
 		};
 		blobReader.readAsArrayBuffer(file);
-		console.log(blob);
 	}
 
 	async function handleURLChange(event) {
@@ -61,16 +83,22 @@
 		<label class="label">
 			<span class="h3 font-semibold">URL</span>
 			<input
-				class="input"
+				class="input text-center md:text-left"
 				type="url"
 				placeholder="https://examples.com/image.png"
 				on:change={handleURLChange}
 			/>
 		</label>
-		<p class="p">or simply paste the image from you clipboard with CTRL+V</p>
+		<p class="p">or simply paste the image from you clipboard with</p>
+		<div class="flex flex-row gap-4 items-center justify-center font-bold invisible md:visible">
+			<div class={ctrlSwitch}>Ctrl</div>
+			<p>+</p>
+			<div class={vSwitch}>V</div>
+		</div>
 	</div>
 
 	<div
+		id="results"
 		class="card card-hover block flex w-[100%] md:w-[80%] h-[95vh] md:h-auto flex-col items-center justify-center p-2 md:p-10 px-10 md:px-20 text-center"
 	>
 		{#if uploadedImage}
@@ -88,7 +116,7 @@
 							<nav class="list-nav">
 								<ul>
 									<div
-										class="flex flex-col snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4items-start justify-start"
+										class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex flex-col gap-4 overflow-x-auto px-4 items-start justify-start"
 									>
 										{#if response.data.length != 0}
 											{#each response.data as item}

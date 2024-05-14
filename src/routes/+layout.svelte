@@ -9,10 +9,10 @@
         <span class="text-sm">This is a demo app made by <a class="font-bold" href="https://weblion.pro">Weblion</a>  found @ https://weblion.pro</span>
     </div>
 </div>
-<div class="flex justify-between px-20 py-10">
-    <div></div>
-    <h1 class="h1 font-bold">OBJECT CLASSIFICATION APP</h1>
-    <div class="justify-center items-center pt-3">
+<div class="flex justify-between  py-10">
+    <div class="invisible md:visible "></div>
+    <h1 class="h2 md:h1 font-bold px-10 md:px-0">OBJECT CLASSIFICATION APP</h1>
+    <div class="justify-center items-center pt-2 px-4">
         <LightSwitch />
     </div>
 </div>

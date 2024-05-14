@@ -10,13 +10,10 @@ export async function POST({request}) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${accountID}/ai/run/@cf/facebook/detr-resnet-50`;
   const limit = parseInt(4 * 1024 * 1024); // 2MB
   let body = await request.blob();
-  console.log("size before "+body.size);
 
   if (body.size > limit ) {
     body = await resizeImage(body, limit);
   }
-
-  console.log("size after "+body.size);
 
   try {
     const response = await fetch(url, {
@@ -29,7 +26,6 @@ export async function POST({request}) {
     });
 
     let res = await response.json();
-    console.log(res);
     res = res.result;
     let tempLabel = [];
     let tobedeleted = [];
@@ -74,7 +70,6 @@ async function resizeImage(blob, limit, quality = 95) {
         body: blob,
       });
       let compressedUrl = await res.json();
-      console.log(compressedUrl);
       compressedUrl = compressedUrl.output.url;
       const compressedBlob = await fetch(compressedUrl).then((res) => res.blob());
 
