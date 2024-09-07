@@ -7,6 +7,7 @@ const token = CLOUDFLAREAPIKEY;
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({request}) {
+  if (request.url!= "https://class.weblion.pro/cloudflare") return error(403, "Not AUTHORIZED");
   const url = `https://api.cloudflare.com/client/v4/accounts/${accountID}/ai/run/@cf/facebook/detr-resnet-50`;
   const limit = parseInt(4 * 1024 * 1024); // 2MB
   let body = await request.blob();

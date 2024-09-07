@@ -138,9 +138,15 @@
 								</ul>
 							</nav>
 						{:catch error}
+							{#if error.message.includes('status code 403')}
+								<div class="alert-error alert">
+									<p>Not Autorized</p>
+								</div>
+							{:else}
 							<div class="alert-error alert">
 								<p>{error.message}</p>
 							</div>
+							{/if}
 						{/await}
 					{/if}
 				</div>
